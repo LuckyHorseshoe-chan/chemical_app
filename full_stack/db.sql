@@ -9,14 +9,14 @@ CREATE TABLE "nanoparticle" (
 );
 
 CREATE TABLE "synthesis" (
-  "id" integer,
+  "id" integer PRIMARY KEY,
   "np_id" integer,
   "method" text,
   "article_id" integer
 );
 
 CREATE TABLE "NOVA" (
-  "id" integer,
+  "id" integer PRIMARY KEY,
   "np_id" integer,
   "method" text,
   "absorbat" text,
@@ -27,7 +27,7 @@ CREATE TABLE "NOVA" (
 );
 
 CREATE TABLE "material" (
-  "mat_id" integer,
+  "mat_id" integer PRIMARY KEY,
   "name" text,
   "synonyms" text,
   "chem_form" text,
@@ -35,7 +35,7 @@ CREATE TABLE "material" (
 );
 
 CREATE TABLE "user" (
-  "id" integer,
+  "id" integer PRIMARY KEY,
   "name" text,
   "email" text
 );

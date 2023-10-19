@@ -1,6 +1,6 @@
 ## Тестовое задание в команду центра ИИ в Химии (full-stack)
 
-В рамках тестового задание мы предлагаем тебе реализовать 3 страницы для вэб сервиса.
+В рамках тестового задание мы предлагаем тебе реализовать 3 страницы для веб сервиса.
 Фронтовая часть написана на js/react/redux. На бекенде - django+postgres.
 
 Макет по [ссылке](https://www.figma.com/file/KDrMrEBVj2zSeg5pW7XdoI/html.to.design-(Community)?type=design&node-id=0%3A1&mode=design&t=9VXBqPidErCedJHn-1).

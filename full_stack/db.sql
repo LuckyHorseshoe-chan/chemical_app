@@ -37,7 +37,10 @@ CREATE TABLE "material" (
 CREATE TABLE "user" (
   "id" integer PRIMARY KEY,
   "name" text,
-  "email" text
+  "surname" text,
+  "username" text,
+  "email" text,
+  "password" text
 );
 
 ALTER TABLE "synthesis" ADD FOREIGN KEY ("np_id") REFERENCES "nanoparticle" ("id");

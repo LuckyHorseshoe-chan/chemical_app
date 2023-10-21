@@ -19,7 +19,7 @@ function MainPage(){
             <NavHeader />
             <Header />
             <Navbar/>
-            <Main />
+            <Main/>
             <Footer />
         </Grid>
     )

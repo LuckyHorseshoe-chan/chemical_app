@@ -1,10 +1,11 @@
 import { GridItem } from '@chakra-ui/react'
-import Table from './Table';
+import DataTable from './DataTable';
+import Form from './Form';
 
 function Main(){
     return(
         <GridItem bg='#F9FAFB' border='1px' borderColor='gray.200' area={'main'}>
-            <Table />
+            <DataTable/>
         </GridItem>
     )
 }

@@ -9,12 +9,27 @@ import {
     Radio,
     Spacer 
 } from '@chakra-ui/react'
+import { useState  } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Authorization(){
-    const onClick = () => {
-        fetch('http://localhost:8000/api/users/')
+    const navigate = useNavigate()
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [rememberMe, setRememberMe] = useState(false)
+    const [msg, setMsg] = useState("")
+
+    const login = () => {
+        fetch('http://localhost:8000/api/authenticate/', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({"username": username, "password": password, "rememberMe": rememberMe})
+        })
         .then((res) => res.json())
-        .then((data) => {console.log(data)})
+        .then((data) => {
+            if (!data["success"]) setMsg(data["message"])
+            else navigate('main')
+        })
     }
     return (
         <Center>
@@ -37,16 +52,25 @@ function Authorization(){
                     <Text fontSize='2xl' fontStyle='Roboto'>Login</Text>
                     <Box mt='3vh'>
                         <Text as='b' fontStyle='Roboto'>Username</Text>
-                        <Input mt='1vh' size='sm' placeholder='Username'></Input>
+                        <Input 
+                            mt='1vh' 
+                            size='sm' 
+                            placeholder='Username'
+                            onChange={(e: any) => setUsername(e.target.value)}></Input>
                     </Box>
                     <Box mt='2vh'>
                         <Text as='b' fontStyle='Roboto'>Password</Text>
-                        <Input mt='1vh' size='sm' placeholder='Password'></Input>
+                        <Input 
+                            mt='1vh' 
+                            size='sm' 
+                            placeholder='Password'
+                            onChange={(e: any) => setPassword(e.target.value)}></Input>
                     </Box>
+                    <Text mt='1vh' color='red'>{msg}</Text>
                     <Flex mt='2vh'>
-                        <Radio fontStyle='Roboto'>Remember Me</Radio>
+                        <Radio fontStyle='Roboto' onChange={(e: any) => setRememberMe(true)}>Remember Me</Radio>
                         <Spacer />
-                        <Button bg='#2196F3' color='white'>Login</Button>
+                        <Button bg='#2196F3' color='white' onClick={login}>Login</Button>
                     </Flex>
                 </Box>
                 

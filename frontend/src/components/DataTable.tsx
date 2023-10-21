@@ -1,4 +1,3 @@
-import { useTable, usePagination } from "react-table";
 import {
     Center,
     Box,
@@ -27,123 +26,40 @@ import {
     ChevronRightIcon,
     ChevronLeftIcon
   } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
 import {
-    Column,
-    Table as ReactTable,
-    PaginationState,
     useReactTable,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    ColumnDef,
-    OnChangeFn,
     flexRender,
     createColumnHelper
   } from '@tanstack/react-table'
-import axios from "axios";
+import { useAppSelector } from '../hooks';
+import { selectDatabase } from '../features/databaseSlice';
+import nanoparticleColumns from "../columnHelpers/nanoparticleColumns";
+import materialColumns from "../columnHelpers/materialColums";
+import synthesisColumns from "../columnHelpers/synthesisColums";
+import novaColumns from "../columnHelpers/novaColumns";
 
 
 function DataTable(){
-    type UnitConversion = {
-        fromUnit: string;
-        toUnit: string;
-        factor: number;
-      };
-      
-    const data: UnitConversion[] = [
-    {
-        fromUnit: "inches",
-        toUnit: "millimetres (mm)",
-        factor: 25.4
-    },
-    {
-        fromUnit: "feet",
-        toUnit: "centimetres (cm)",
-        factor: 30.48
-    },
-    {
-        fromUnit: "yards",
-        toUnit: "metres (m)",
-        factor: 0.91444
-    },
-    {
-        fromUnit: "inches3",
-        toUnit: "millimetres (mm)",
-        factor: 25.4
-    },
-    {
-        fromUnit: "feet3",
-        toUnit: "centimetres (cm)",
-        factor: 30.48
-    },
-    {
-        fromUnit: "yards3",
-        toUnit: "metres (m)",
-        factor: 0.91444
-    },
-    {
-        fromUnit: "inches2",
-        toUnit: "millimetres (mm)",
-        factor: 25.4
-    },
-    {
-        fromUnit: "feet2",
-        toUnit: "centimetres (cm)",
-        factor: 30.48
-    },
-    {
-        fromUnit: "yards2",
-        toUnit: "metres (m)",
-        factor: 0.91444
-    },
-    {
-        fromUnit: "inches1",
-        toUnit: "millimetres (mm)",
-        factor: 25.4
-    },
-    {
-        fromUnit: "feet1",
-        toUnit: "centimetres (cm)",
-        factor: 30.48
-    },
-    {
-        fromUnit: "yards1",
-        toUnit: "metres (m)",
-        factor: 0.91444
-    }
-    ];
-      
-      const columnHelper = createColumnHelper<UnitConversion>();
-      
-      const columns = [
-        columnHelper.accessor("fromUnit", {
-          cell: (info) => info.getValue(),
-          header: "To convert"
-        }),
-        columnHelper.accessor("toUnit", {
-          cell: (info) => info.getValue(),
-          header: "Into"
-        }),
-        columnHelper.accessor("factor", {
-          cell: (info) => info.getValue(),
-          header: "Multiply by",
-          meta: {
-            isNumeric: true
-          }
-        })
-      ];
+    const database = useAppSelector(selectDatabase);
+    const data: any  =  
+    database.column === "Nanoparticle" ? database.data.nanoparticle : 
+    database.column === "Material" ? database.data.material :
+    database.column === "Synthesis" ? database.data.synthesis : database.data.nova
+    
+    const columns: any = database.column === "Nanoparticle" ? nanoparticleColumns : 
+    database.column === "Material" ? materialColumns : 
+    database.column === "Synthesis" ? synthesisColumns : novaColumns
       
     const table = useReactTable({
         data,
         columns,
-        // Pipeline
         getCoreRowModel: getCoreRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        //
         debugTable: true,
       })
+    console.log(data)
     return(
         <Center>
             <Box fontStyle='Roboto' mt='3vh' w='81vw'>
@@ -158,7 +74,7 @@ function DataTable(){
                         <Center>
                             <Box w='78vw' mt='2vh'>
                                 <Text as='b' fontSize='xl'>
-                                    Nanoparticles Data Table
+                                    {database.column} Data Table
                                 </Text>
                                 <Flex mt='2vh'>
                                     <Center mr='10px'>Show</Center>
@@ -180,7 +96,7 @@ function DataTable(){
                                     <Center>Search:</Center>
                                     <Input w='200px' ml='10px'></Input>
                                 </Flex>
-                                <Table border='1px' borderColor='gray.200' size='sm'>
+                                <Table border='1px' borderColor='gray.200' size='sm' variant='striped' colorScheme='teal'>
                                     <Thead>
                                     {table.getHeaderGroups().map(headerGroup => (
                                         <Tr key={headerGroup.id}>

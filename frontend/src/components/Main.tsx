@@ -1,11 +1,16 @@
 import { GridItem } from '@chakra-ui/react'
+import { useAppSelector } from '../hooks';
+import { selectUser } from '../features/userSlice';
 import DataTable from './DataTable';
 import Form from './Form';
 
 function Main(){
+    const user = useAppSelector(selectUser)
     return(
         <GridItem bg='#F9FAFB' border='1px' borderColor='gray.200' area={'main'}>
-            <DataTable/>
+            {user.tab == "table"
+            ? <DataTable/>
+            : <Form />}
         </GridItem>
     )
 }

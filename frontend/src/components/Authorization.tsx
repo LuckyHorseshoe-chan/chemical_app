@@ -9,11 +9,15 @@ import {
     Radio,
     Spacer 
 } from '@chakra-ui/react'
+import { useAppDispatch } from '../hooks';
 import { useState  } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { setLogged, setUser } from '../features/userSlice';
+import { getNanoparticleAsync, getMaterialAsync, getSynthesisAsync, getNOVAAsync } from '../features/databaseSlice'
 
 function Authorization(){
     const navigate = useNavigate()
+    const dispatch = useAppDispatch();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false)
@@ -27,8 +31,16 @@ function Authorization(){
         })
         .then((res) => res.json())
         .then((data) => {
-            if (!data["success"]) setMsg(data["message"])
-            else navigate('main')
+            if (data["success"]) {
+                dispatch(setLogged(true))
+                dispatch(setUser(data["user"]))
+                dispatch(getNanoparticleAsync())
+                dispatch(getMaterialAsync())
+                dispatch(getSynthesisAsync())
+                dispatch(getNOVAAsync())
+                navigate('main')
+            }
+            else setMsg(data["message"])
         })
     }
     return (

@@ -12,12 +12,19 @@ import {
     AccordionButton,
     AccordionPanel,
     AccordionIcon,
-    List,
-    ListItem,
-    Link
 } from '@chakra-ui/react'
+import { useAppDispatch } from '../hooks';
+import { setTab } from '../features/userSlice'
+import { setColumn } from '../features/databaseSlice';
 
 function Navbar(){
+    const dispatch = useAppDispatch()
+    const tables: string[] = ["Nanoparticles", "Material", "Synthesis", "NOVA"]
+    const onClick = (table: string) => () => {
+        dispatch(setColumn(table))
+        dispatch(setTab("table"))
+    }
+
     return(
         <GridItem border='1px' borderColor='gray.200' area={'nav'}>
             <Center>
@@ -43,7 +50,7 @@ function Navbar(){
                         </AccordionButton>
                     </AccordionItem>
                     <AccordionItem>
-                        <AccordionButton>
+                        <AccordionButton onClick={() => dispatch(setTab("form"))}>
                             <Flex>
                                 <Center>
                                     <Image boxSize='17px' src='/Forms.png'/>
@@ -53,7 +60,7 @@ function Navbar(){
                         </AccordionButton>
                     </AccordionItem>
                     <AccordionItem>
-                        <AccordionButton>
+                        <AccordionButton onClick={() => dispatch(setTab("table"))}>
                             <Flex>
                                 <Center>
                                     <Image boxSize='17px' src='/Tables.png'/>
@@ -65,18 +72,16 @@ function Navbar(){
                         </AccordionButton>
                         <AccordionPanel>
                             <Box ml='2vw'>
-                                <Button justifyContent="flex-start" w='100%' borderRadius="0" bg='white'>
-                                    Nanoparticles
-                                </Button>
-                                <Button justifyContent="flex-start" w='100%' borderRadius="0" bg='white'>
-                                    Material
-                                </Button>
-                                <Button justifyContent="flex-start" w='100%' borderRadius="0" bg='white'>
-                                    Synthesis
-                                </Button>
-                                <Button justifyContent="flex-start" w='100%' borderRadius="0" bg='white'>
-                                    NOVA
-                                </Button>
+                                {tables.map((table: string) => 
+                                    (<Button 
+                                        justifyContent="flex-start" 
+                                        w='100%' 
+                                        borderRadius="0" 
+                                        bg='white'
+                                        onClick={onClick(table)}>
+                                            {table}
+                                    </Button>)
+                                )}
                             </Box>
                         </AccordionPanel>
                     </AccordionItem>

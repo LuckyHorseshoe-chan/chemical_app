@@ -13,7 +13,7 @@ function MainPage(){
         templateAreas={`"nav-header header"
         "nav main"
         "nav footer"`}
-        gridTemplateRows={'66px 1fr 60px'}
+        gridTemplateRows={'8vh 85vh 7vh'}
         gridTemplateColumns={'15vw 1fr'}
         h='100vh'>
             <NavHeader />

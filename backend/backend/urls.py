@@ -20,5 +20,5 @@ from chem import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', views.users_list),
+    path('api/authenticate/', views.authentication),
 ]

@@ -42,3 +42,55 @@ def authenticate(username, password):
             and password == user['password']):
             return user
     return None
+
+@api_view(['GET', 'POST'])
+def nanoparticles(request):
+    if request.method == 'GET':
+        data = Nanoparticle.objects.all()
+        serializer = NanoparticleSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = NanoparticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST'])
+def materials(request):
+    if request.method == 'GET':
+        data = Material.objects.all()
+        serializer = MaterialSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = MaterialSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST'])
+def synthesises(request):
+    if request.method == 'GET':
+        data = Synthesis.objects.all()
+        serializer = SynthesisSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = SynthesisSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'POST'])
+def NOVAs(request):
+    if request.method == 'GET':
+        data = NOVA.objects.all()
+        serializer = NOVASerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = NOVASerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

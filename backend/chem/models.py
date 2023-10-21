@@ -22,7 +22,7 @@ class User(models.Model):
         db_table = 'user'
 
 class Nanoparticle(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    id = models.CharField(primary_key=True)
     np_str = models.CharField()
     size = models.FloatField()
     article_id = models.IntegerField()

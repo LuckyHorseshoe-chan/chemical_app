@@ -1,6 +1,6 @@
 type Nova = {
     id: number;
-    np_id: number;
+    np_id: string;
     method: string;
     absorbat: string;
     pore_size: number;

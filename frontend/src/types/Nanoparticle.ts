@@ -4,7 +4,7 @@ type Nanoparticle = {
     size: number;
     article_id: number;
     mep_id: number;
-    mat_id: number;
+    mat_id: string;
     user_id: number;
 };
 

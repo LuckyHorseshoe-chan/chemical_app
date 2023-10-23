@@ -1,8 +1,8 @@
 type Synthesis = {
     id: number;
-    np_id: number;
+    np_id: string;
     method: string;
-    article_id: number
+    article_id: number;
 }
 
 export default Synthesis;

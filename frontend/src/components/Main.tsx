@@ -3,6 +3,7 @@ import { useAppSelector } from '../hooks';
 import { selectUser } from '../features/userSlice';
 import DataTable from './DataTable';
 import Form from './Form';
+import Footer from './Footer';
 
 function Main(){
     const user = useAppSelector(selectUser)

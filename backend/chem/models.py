@@ -1,7 +1,7 @@
 from django.db import models
 
 class Material(models.Model):
-    mat_id = models.BigAutoField(primary_key=True)
+    mat_id = models.CharField(primary_key=True)
     name = models.CharField()
     synonyms = models.CharField()
     chem_form = models.CharField()

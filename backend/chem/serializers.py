@@ -17,7 +17,7 @@ class NanoparticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Nanoparticle 
-        fields = ('id', 'np_str', 'size', 'article_id', 'mat_id', 'mep_id', 'user_id')
+        fields = ('id', 'np_str', 'size', 'article_id', 'mep_id', 'mat_id', 'user_id')
 
 class SynthesisSerializer(serializers.ModelSerializer):
 

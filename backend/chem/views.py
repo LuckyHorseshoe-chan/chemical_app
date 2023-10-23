@@ -4,7 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 import json
 from django.http import JsonResponse
+import random
 from .serializers import *
+from .models import *
 
 @api_view(['POST'])
 def authentication(request):
@@ -43,54 +45,84 @@ def authenticate(username, password):
             return user
     return None
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def nanoparticles(request):
-    if request.method == 'GET':
-        data = Nanoparticle.objects.all()
-        serializer = NanoparticleSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = NanoparticleSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    data = Nanoparticle.objects.all()
+    serializer = NanoparticleSerializer(data, context={'request': request}, many=True)
+    return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def materials(request):
-    if request.method == 'GET':
-        data = Material.objects.all()
-        serializer = MaterialSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = MaterialSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    data = Material.objects.all()
+    serializer = MaterialSerializer(data, context={'request': request}, many=True)
+    return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def synthesises(request):
-    if request.method == 'GET':
-        data = Synthesis.objects.all()
-        serializer = SynthesisSerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = SynthesisSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    data = Synthesis.objects.all()
+    serializer = SynthesisSerializer(data, context={'request': request}, many=True)
+    return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def NOVAs(request):
-    if request.method == 'GET':
-        data = NOVA.objects.all()
-        serializer = NOVASerializer(data, context={'request': request}, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = NOVASerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    data = NOVA.objects.all()
+    serializer = NOVASerializer(data, context={'request': request}, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def send_form(request):
+    #print(request.data)
+    try:
+        success = False
+        submitted = []
+        mat_serializer = MaterialSerializer(data=request.data['material'])
+        if mat_serializer.is_valid():
+            mat_serializer.save()
+            success = True
+            submitted.append('material')
+        nano_data = request.data['nanoparticle']
+        nano_serializer = NanoparticleSerializer(data=request.data['nanoparticle'])
+        #print(nano_serializer)
+        if nano_serializer.is_valid():
+            Nanoparticle(id=nano_data['id'], np_str=nano_data['np_str'], 
+            size=float(nano_data['size']), article_id=nano_data['article_id'], 
+            mep_id=nano_data['mep_id'], mat_id=nano_data['mat_id'], user_id=nano_data['user_id']).save()
+            success = True
+            submitted.append('nanoparticle')
+        nova_serializer = NOVASerializer(data=request.data['nova'])
+        nova_data = request.data['nova']
+        if nova_serializer.is_valid():
+            NOVA(id=nova_data['id'], method=nova_data['method'], absorbat=nova_data['absorbat'], 
+            pore_size=nova_data['pore_size'], density=nova_data['density'], ads_desorb_curve=nova_data['ads_desorb_curve'],
+            pore_distr_curve=nova_data['pore_distr_curve'], np_id=nova_data['np_id']).save()
+            success = True
+            submitted.append('NOVA')
+        syn_serializer = SynthesisSerializer(data=request.data['synthesis'])
+        syn_data = request.data['synthesis']
+        if syn_serializer.is_valid():
+            Synthesis(id=syn_data['id'], method=syn_data['method'], article_id=syn_data['article_id'], np_id=syn_data['np_id']).save()
+            success = True
+            submitted.append('synthesis')
+        return JsonResponse({"success": success, "message": ", ".join(submitted) + " forms submitted"})
+    except:
+        return JsonResponse({"success": False, "message": "Invalid request data"})
+
+@api_view(['POST'])
+def set_ids(request):
+    if 'np_name' not in request.data or len(request.data['np_name']) >= 3:
+        return JsonResponse({
+            "np_id": "MV11" + str(random.randint(10000, 99999)),
+            "article_id": random.randint(1000, 9999),
+            "mat_id": "MV11" + str(random.randint(100, 999)),
+            "mep_id": random.randint(10000, 99999),
+            "syn_id": random.randint(10000, 99999),
+            "nova_id": random.randint(10000, 99999)
+        })
+    return JsonResponse({
+            "np_id": "",
+            "article_id": 0,
+            "mat_id": "",
+            "mep_id": 0,
+            "syn_id": 0,
+            "nova_id": 0
+        })

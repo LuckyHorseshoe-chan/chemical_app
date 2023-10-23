@@ -1,13 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import databaseReducer from './features/databaseSlice';
-//import tableReducer from './features/tableSlice';
+import tableReducer from './features/tableSlice';
 import userReducer from './features/userSlice';
 import formReducer from './features/formSlice';
 
 export const store = configureStore({
   reducer: {
     database: databaseReducer,
-    //table: tableReducer,
+    table: tableReducer,
     user: userReducer,
     form: formReducer
   },

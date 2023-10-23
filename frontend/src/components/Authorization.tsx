@@ -14,10 +14,11 @@ import { useState  } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { setLogged, setUser } from '../features/userSlice';
 import { getNanoparticleAsync, getMaterialAsync, getSynthesisAsync, getNOVAAsync } from '../features/databaseSlice'
+import { setUserId } from '../features/formSlice';
 
 function Authorization(){
     const navigate = useNavigate()
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [rememberMe, setRememberMe] = useState(false)
@@ -38,6 +39,7 @@ function Authorization(){
                 dispatch(getMaterialAsync())
                 dispatch(getSynthesisAsync())
                 dispatch(getNOVAAsync())
+                dispatch(setUserId(data["user"]["id"]))
                 navigate('main')
             }
             else setMsg(data["message"])

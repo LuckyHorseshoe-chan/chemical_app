@@ -26,19 +26,19 @@ const initialState: FormState = {
         },
         synthesis: {
             id: 0,
-            np_id: "",
             method: "",
-            article_id: 0
+            article_id: 0,
+            np_id: ""
         },
         nova: {
             id: 0,
-            np_id: "",
             method: "",
             absorbat: "",
             pore_size: 0,
             density: 0,
             ads_desorb_curve: "",
-            pore_distr_curve: ""
+            pore_distr_curve: "",
+            np_id: ""
         },
     },
 };

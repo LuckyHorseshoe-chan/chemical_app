@@ -1,4 +1,4 @@
-import { GridItem } from '@chakra-ui/react'
+import { GridItem, Box } from '@chakra-ui/react'
 import { useAppSelector } from '../hooks';
 import { selectUser } from '../features/userSlice';
 import DataTable from './DataTable';

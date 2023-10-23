@@ -4,7 +4,7 @@ import {
 
 function Header(){
     return(
-        <GridItem bg='orange.300' border='1px' borderColor='gray.200' area={'header'}></GridItem>
+        <GridItem border='1px' borderColor='gray.200' area={'header'}></GridItem>
     )
 }
 

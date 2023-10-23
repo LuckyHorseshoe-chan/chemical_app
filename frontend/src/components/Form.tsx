@@ -12,6 +12,16 @@ function Form(){
     const forms: string[] = ["Nanoparticles", "Material", "Synthesis", "NOVA", "Article", "Other"]
     const formData = useAppSelector(selectForm)
 
+    const sendForm = () => {
+        fetch('http://localhost:8000/api/send_form/', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        })
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+    }
+
     return(
         <Flex w='80vw' h='265vh' m='4vh'>
             <List w='10vw'>
@@ -37,7 +47,7 @@ function Form(){
                 <NovaForm/>
                 <ArticleForm />
                 <OtherForm/>
-                <Button mt={5}>Submit</Button>
+                <Button mt={5} onClick={sendForm}>Submit</Button>
             </Box>
         </Flex>
     )

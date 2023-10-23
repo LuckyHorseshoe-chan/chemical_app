@@ -10,5 +10,6 @@ urlpatterns = [
     path('api/synthesises/', views.synthesises),
     path('api/NOVA/', views.NOVAs),
     path('api/send_form/', views.send_form),
-    path("api/set_ids/", views.set_ids)
+    path("api/set_ids/", views.set_ids),
+    path("api/register/", views.register)
 ]

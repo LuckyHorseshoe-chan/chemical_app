@@ -71,7 +71,6 @@ def NOVAs(request):
 
 @api_view(['POST'])
 def send_form(request):
-    #print(request.data)
     try:
         success = False
         submitted = []
@@ -82,7 +81,6 @@ def send_form(request):
             submitted.append('material')
         nano_data = request.data['nanoparticle']
         nano_serializer = NanoparticleSerializer(data=request.data['nanoparticle'])
-        #print(nano_serializer)
         if nano_serializer.is_valid():
             Nanoparticle(id=nano_data['id'], np_str=nano_data['np_str'], 
             size=float(nano_data['size']), article_id=nano_data['article_id'], 
@@ -126,3 +124,13 @@ def set_ids(request):
             "syn_id": 0,
             "nova_id": 0
         })
+@api_view(['POST'])
+def register(request):
+    try:
+        user_serializer = UserSerializer(data=request.data)
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return JsonResponse({"success": True})
+        return JsonResponse({"success": False})
+    except:
+        return JsonResponse({"success": False})

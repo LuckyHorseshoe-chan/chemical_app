@@ -24,10 +24,7 @@ import {
 import {
     useReactTable,
     getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
     flexRender,
-    createColumnHelper
   } from '@tanstack/react-table'
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { selectDatabase } from '../features/databaseSlice';

@@ -38,9 +38,9 @@ CREATE TABLE "user" (
   "id" integer PRIMARY KEY,
   "name" text,
   "surname" text,
-  "username" text,
-  "email" text,
-  "password" text
+  "username" text NOT NULL,
+  "email" text NOT NULL,
+  "password" text NOT NULL
 );
 
 ALTER TABLE "synthesis" ADD FOREIGN KEY ("np_id") REFERENCES "nanoparticle" ("id");

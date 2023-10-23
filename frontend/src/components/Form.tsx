@@ -1,4 +1,4 @@
-import { Flex, Box, Button, Spacer, List, ListItem, Text } from '@chakra-ui/react'
+import { Flex, Box, Button, Spacer, List, ListItem, Text, Center } from '@chakra-ui/react'
 import { useAppDispatch, useAppSelector } from '../hooks';
 import NanoparticleForm from './forms/NanoparticleForm';
 import MaterialForm from './forms/MaterialForm';
@@ -7,10 +7,14 @@ import NovaForm from './forms/Nova';
 import ArticleForm from './forms/ArticleForm';
 import OtherForm from './forms/OtherForm';
 import { selectForm } from '../features/formSlice';
+import { useState  } from 'react';
 
 function Form(){
     const forms: string[] = ["Nanoparticles", "Material", "Synthesis", "NOVA", "Article", "Other"]
     const formData = useAppSelector(selectForm)
+    const [msg, setMsg] = useState("")
+    const [status, setStatus] = useState(false)
+
 
     const sendForm = () => {
         fetch('http://localhost:8000/api/send_form/', {
@@ -19,7 +23,10 @@ function Form(){
             body: JSON.stringify(formData)
         })
         .then((res) => res.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+            setStatus(data.success)
+            setMsg(data.message)
+        })
     }
 
     return(
@@ -47,7 +54,16 @@ function Form(){
                 <NovaForm/>
                 <ArticleForm />
                 <OtherForm/>
-                <Button mt={5} onClick={sendForm}>Submit</Button>
+                <Flex mt={5}>
+                    <Button onClick={sendForm}>
+                        Submit
+                    </Button>
+                    <Center>
+                        <Text color={status ? 'green' : 'red'} ml={2}>
+                            {msg}
+                        </Text>
+                    </Center>
+                </Flex>
             </Box>
         </Flex>
     )

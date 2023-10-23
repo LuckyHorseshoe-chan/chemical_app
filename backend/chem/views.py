@@ -3,10 +3,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 import json
+import os
 from django.http import JsonResponse
 import random
 from .serializers import *
 from .models import *
+from .forms import *
 
 @api_view(['POST'])
 def authentication(request):
@@ -71,13 +73,12 @@ def NOVAs(request):
 
 @api_view(['POST'])
 def send_form(request):
+    print(request.data)
     try:
-        success = False
         submitted = []
         mat_serializer = MaterialSerializer(data=request.data['material'])
         if mat_serializer.is_valid():
             mat_serializer.save()
-            success = True
             submitted.append('material')
         nano_data = request.data['nanoparticle']
         nano_serializer = NanoparticleSerializer(data=request.data['nanoparticle'])
@@ -85,7 +86,6 @@ def send_form(request):
             Nanoparticle(id=nano_data['id'], np_str=nano_data['np_str'], 
             size=float(nano_data['size']), article_id=nano_data['article_id'], 
             mep_id=nano_data['mep_id'], mat_id=nano_data['mat_id'], user_id=nano_data['user_id']).save()
-            success = True
             submitted.append('nanoparticle')
         nova_serializer = NOVASerializer(data=request.data['nova'])
         nova_data = request.data['nova']
@@ -93,17 +93,17 @@ def send_form(request):
             NOVA(id=nova_data['id'], method=nova_data['method'], absorbat=nova_data['absorbat'], 
             pore_size=nova_data['pore_size'], density=nova_data['density'], ads_desorb_curve=nova_data['ads_desorb_curve'],
             pore_distr_curve=nova_data['pore_distr_curve'], np_id=nova_data['np_id']).save()
-            success = True
             submitted.append('NOVA')
         syn_serializer = SynthesisSerializer(data=request.data['synthesis'])
         syn_data = request.data['synthesis']
         if syn_serializer.is_valid():
             Synthesis(id=syn_data['id'], method=syn_data['method'], article_id=syn_data['article_id'], np_id=syn_data['np_id']).save()
-            success = True
             submitted.append('synthesis')
-        return JsonResponse({"success": success, "message": ", ".join(submitted) + " forms submitted"})
+        if len(submitted):
+            return JsonResponse({"success": True, "message": ", ".join(submitted) + " forms submitted"})
+        return JsonResponse({"success": False, "message": "Error: invalid data"})
     except:
-        return JsonResponse({"success": False, "message": "Invalid request data"})
+        return JsonResponse({"success": False, "message": "Error: invalid data"})
 
 @api_view(['POST'])
 def set_ids(request):
@@ -134,3 +134,4 @@ def register(request):
         return JsonResponse({"success": False})
     except:
         return JsonResponse({"success": False})
+

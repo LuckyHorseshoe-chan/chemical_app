@@ -22,8 +22,8 @@ CREATE TABLE "NOVA" (
   "absorbat" text,
   "pore_size" float,
   "density" float,
-  "ads_desorb_curve" file,
-  "pore_distr_curve" file
+  "ads_desorb_curve" text,
+  "pore_distr_curve" text
 );
 
 CREATE TABLE "material" (

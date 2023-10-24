@@ -8,7 +8,6 @@ from django.http import JsonResponse
 import random
 from .serializers import *
 from .models import *
-from .forms import *
 
 @api_view(['POST'])
 def authentication(request):
